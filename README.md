@@ -31,7 +31,7 @@ $ ./target/syncope
 
 ### [Buildpacks](https://docs.spring.io/spring-boot/docs/current/reference/html/container-images.html#container-images.buildpacks)
 
-Build and run Docker image:
+Build Docker image and run as Docker container:
 
 ```
 $ mvn spring-boot:build-image
