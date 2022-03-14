@@ -8,7 +8,7 @@ Study prototype for Apache Syncope 4.0 Notturno
 1. GraalVM installed  
     * [download latest CE build](https://github.com/graalvm/graalvm-ce-builds/releases) for Java 17 and your platform
     * uncompress and set `GRAALVM_HOME` property
-    * run `$GRAALVM_HOME/bin/gu install native-image`
+    * run `sudo $GRAALVM_HOME/bin/gu install native-image`
 
 ## How to run
 
