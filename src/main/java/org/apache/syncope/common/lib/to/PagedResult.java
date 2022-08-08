@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PagedResult<T extends Serializable> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -7343869497855317226L;
 
     private final List<T> result = new ArrayList<>();
 
