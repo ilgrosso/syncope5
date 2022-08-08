@@ -1,5 +1,12 @@
 package org.apache.syncope.core.rest;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -11,7 +18,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +40,18 @@ import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.view.HttpMessageWriterView;
 
+@OpenAPIDefinition(info =
+        @Info(title = "Apache Syncope", version = "4.0.0", contact =
+                @Contact(name = "The Apache Syncope community",
+                        email = "dev@syncope.apache.org",
+                        url = "https://syncope.apache.org")),
+        security = {
+            @SecurityRequirement(name = "BasicAuthentication"),
+            @SecurityRequirement(name = "Bearer") })
+@SecuritySchemes({
+    @SecurityScheme(name = "BasicAuthentication", type = SecuritySchemeType.HTTP, scheme = "basic"),
+    @SecurityScheme(name = "Bearer", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
+})
 @AutoConfigureBefore(WebFluxAutoConfiguration.class)
 @Configuration
 public class RESTContext implements WebFluxConfigurer {
@@ -44,12 +62,7 @@ public class RESTContext implements WebFluxConfigurer {
     }
 
     private OpenApiCustomiser openApiCustomiser() {
-        return openAPI -> openAPI.
-                schemaRequirement("BasicAuthentication",
-                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")).
-                schemaRequirement("Bearer",
-                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")).
-                getPaths().values().stream().
+        return openAPI -> openAPI.getPaths().values().stream().
                 flatMap(pathItem -> pathItem.readOperations().stream()).
                 forEach(operation -> {
                     if (operation.getParameters() != null) {
