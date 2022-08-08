@@ -19,6 +19,7 @@
 
   <properties>
     <spring-native.version>0.12.1</spring-native.version>
+    <springdoc.version>1.6.9</springdoc.version>
     
     <syncope.version>${project.version}</syncope.version>
 
@@ -51,6 +52,17 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId> 
+      <artifactId>springdoc-openapi-webflux-core</artifactId>
+      <version>${springdoc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId> 
+      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <version>${springdoc.version}</version>
     </dependency>
 
     <dependency>
@@ -134,6 +146,12 @@
       <id>native</id>
 
       <dependencies>
+        <dependency>
+          <groupId>org.springdoc</groupId>
+          <artifactId>springdoc-openapi-native</artifactId>
+          <version>${springdoc.version}</version>
+        </dependency>
+
         <!-- Required with Maven Surefire 2.x -->
         <dependency>
           <groupId>org.junit.platform</groupId>
