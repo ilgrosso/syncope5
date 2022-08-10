@@ -21,10 +21,9 @@ package org.apache.syncope.core.persistence.jpa.entity;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import org.apache.syncope.core.persistence.api.entity.Any;
 
 @MappedSuperclass
-public abstract class AbstractAny extends AbstractGeneratedKeyEntity implements Any {
+public abstract class AbstractAny extends AbstractGeneratedKeyEntity {
 
     private static final long serialVersionUID = -2666540708092702810L;
 
@@ -58,47 +57,38 @@ public abstract class AbstractAny extends AbstractGeneratedKeyEntity implements 
     @Column(nullable = true)
     private String status;
 
-    @Override
     public String getCreator() {
         return creator;
     }
 
-    @Override
     public void setCreator(final String creator) {
         this.creator = creator;
     }
 
-    @Override
     public OffsetDateTime getCreationDate() {
         return creationDate;
     }
 
-    @Override
     public void setCreationDate(final OffsetDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    @Override
     public String getCreationContext() {
         return creationContext;
     }
 
-    @Override
     public void setCreationContext(final String creationContext) {
         this.creationContext = creationContext;
     }
 
-    @Override
     public String getLastModifier() {
         return lastModifier;
     }
 
-    @Override
     public void setLastModifier(final String lastModifier) {
         this.lastModifier = lastModifier;
     }
 
-    @Override
     public OffsetDateTime getLastChangeDate() {
         if (lastChangeDate != null) {
             return lastChangeDate;
@@ -109,27 +99,22 @@ public abstract class AbstractAny extends AbstractGeneratedKeyEntity implements 
         return null;
     }
 
-    @Override
     public void setLastChangeDate(final OffsetDateTime lastChangeDate) {
         this.lastChangeDate = lastChangeDate;
     }
 
-    @Override
     public String getLastChangeContext() {
         return lastChangeContext;
     }
 
-    @Override
     public void setLastChangeContext(final String lastChangeContext) {
         this.lastChangeContext = lastChangeContext;
     }
 
-    @Override
     public String getStatus() {
         return status;
     }
 
-    @Override
     public void setStatus(final String status) {
         this.status = status;
     }

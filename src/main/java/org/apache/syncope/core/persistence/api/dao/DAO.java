@@ -18,10 +18,9 @@
  */
 package org.apache.syncope.core.persistence.api.dao;
 
-import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface DAO<E extends Entity> extends JpaRepository<E, String> {
+public interface DAO<E> extends JpaRepository<E, String> {
 }

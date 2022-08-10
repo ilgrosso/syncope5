@@ -20,13 +20,13 @@ package org.apache.syncope.core.persistence.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.io.Serializable;
 import java.util.Objects;
-import org.apache.syncope.core.persistence.api.entity.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "key")
-public abstract class AbstractEntity implements Entity {
+public abstract class AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -9017214159540857901L;
 
@@ -37,6 +37,8 @@ public abstract class AbstractEntity implements Entity {
             throw new ClassCastException("Expected " + clazz.getName() + ", got " + object.getClass().getName());
         }
     }
+
+    public abstract String getKey();
 
     @Override
     public boolean equals(final Object obj) {

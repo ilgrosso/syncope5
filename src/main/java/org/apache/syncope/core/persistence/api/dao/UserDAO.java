@@ -22,5 +22,5 @@ import org.apache.syncope.core.persistence.jpa.entity.user.JPAUser;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserDAO extends AnyDAO<JPAUser> {
+public interface UserDAO extends DAO<JPAUser> {
 }

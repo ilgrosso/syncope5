@@ -7,7 +7,6 @@ import org.apache.syncope.common.lib.to.UserCR;
 import org.apache.syncope.common.lib.to.UserTO;
 import org.apache.syncope.core.persistence.api.dao.NotFoundException;
 import org.apache.syncope.core.persistence.api.dao.UserDAO;
-import org.apache.syncope.core.persistence.api.entity.user.User;
 import org.apache.syncope.core.persistence.jpa.entity.user.JPAUser;
 import org.apache.syncope.core.spring.security.SecureRandomUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,7 @@ public class UserLogic {
         this.userDAO = userDAO;
     }
 
-    private UserTO getUserTO(final User user) {
+    private UserTO getUserTO(final JPAUser user) {
         UserTO userTO = new UserTO();
         userTO.setKey(user.getKey());
         userTO.setUsername(user.getUsername());
