@@ -27,6 +27,7 @@ import org.apache.syncope.common.lib.SyncopeConstants;
 import org.apache.syncope.common.lib.to.ErrorTO;
 import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.common.rest.api.RESTHeaders;
+import org.apache.syncope.core.logic.UserLogic;
 import org.apache.syncope.core.rest.service.UserService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -164,7 +165,7 @@ public class RESTContext implements WebFluxConfigurer {
     }
 
     @Bean
-    public UserService userService() {
-        return new UserService();
+    public UserService userService(final UserLogic userLogic) {
+        return new UserService(userLogic);
     }
 }

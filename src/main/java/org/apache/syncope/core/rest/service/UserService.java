@@ -17,31 +17,42 @@ import org.apache.syncope.common.lib.to.UserCR;
 import org.apache.syncope.common.lib.to.UserTO;
 import org.apache.syncope.common.lib.to.UserUR;
 import org.apache.syncope.common.rest.api.RESTHeaders;
+import org.apache.syncope.core.logic.UserLogic;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Tag(name = "Users")
 @SecurityRequirements(value = {
     @SecurityRequirement(name = "BasicAuthentication"),
     @SecurityRequirement(name = "Bearer") })
-@RestController
+@Service
 @RequestMapping("/rest/users")
 public class UserService {
+
+    private final UserLogic logic;
+
+    public UserService(final UserLogic logic) {
+        this.logic = logic;
+    }
 
     @Operation(summary = "Search for users.")
     @ApiResponse(responseCode = "200", description = "Paged list of any objects matching the given query")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<PagedResult<UserTO>> search() {
-        return Mono.just(new PagedResult<>());
+        PagedResult<UserTO> result = new PagedResult<>();
+        result.getResult().addAll(logic.search());
+        return Mono.just(result);
     }
 
     @Operation(summary = "Reads the user matching the provided key.")
@@ -51,7 +62,7 @@ public class UserService {
     @GetMapping(value = "/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<UserTO> read(final @PathVariable String key) {
-        return Mono.empty();
+        return Mono.justOrEmpty(logic.read(key));
     }
 
     @Operation(summary = "Creates a new user.")
@@ -82,8 +93,10 @@ public class UserService {
                         description = "Allows the server to inform the "
                         + "client about the fact that a specified preference was applied") }))
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ServerResponse> create(final UserCR createReq) {
-        return Mono.empty();
+    public Mono<ResponseEntity<UserTO>> create(final @RequestBody UserCR createReq) {
+        UserTO user = logic.create(createReq);
+        return Mono.just(ResponseEntity.status(HttpStatus.CREATED).
+                header(RESTHeaders.RESOURCE_KEY, user.getKey()).body(user));
     }
 
     @Operation(summary = "Updates user matching the provided key.")
@@ -120,7 +133,7 @@ public class UserService {
                 + " date of the entity") })
     @PatchMapping(value = "/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ServerResponse> update(final @PathVariable String key, final UserUR updateReq) {
+    public Mono<ResponseEntity<UserTO>> update(final @PathVariable String key, final @RequestBody UserUR updateReq) {
         return Mono.empty();
     }
 
@@ -158,7 +171,8 @@ public class UserService {
                 + " date of the entity") })
     @DeleteMapping(value = "/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ServerResponse> delete(final @PathVariable String key) {
-        return Mono.empty();
+    public Mono<ResponseEntity<UserTO>> delete(final @PathVariable String key) {
+        UserTO user = logic.delete(key);
+        return Mono.just(ResponseEntity.ok().body(user));
     }
 }
