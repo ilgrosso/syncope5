@@ -29,8 +29,8 @@ import org.apache.syncope.common.lib.types.ClientExceptionType;
 import org.apache.syncope.common.rest.api.RESTHeaders;
 import org.apache.syncope.core.logic.UserLogic;
 import org.apache.syncope.core.rest.service.UserService;
-import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +62,7 @@ public class RESTContext implements WebFluxConfigurer {
         registry.defaultViews(new HttpMessageWriterView(new Jackson2JsonEncoder()));
     }
 
-    private OpenApiCustomiser openApiCustomiser() {
+    private OpenApiCustomizer openApiCustomizer() {
         return openAPI -> openAPI.getPaths().values().stream().
                 flatMap(pathItem -> pathItem.readOperations().stream()).
                 forEach(operation -> {
@@ -160,7 +160,7 @@ public class RESTContext implements WebFluxConfigurer {
         return GroupedOpenApi.builder().
                 group("Users").
                 pathsToMatch("/**").
-                addOpenApiCustomiser(openApiCustomiser()).
+                addOpenApiCustomizer(openApiCustomizer()).
                 build();
     }
 

@@ -20,20 +20,25 @@ As ordinary Spring Boot application:
 $ mvn spring-boot:run
 ```
 
-### Executable
+### Executable(https://docs.spring.io/spring-boot/docs/3.0.0-RC2/reference/htmlsingle/#native-image.developing-your-first-application.native-build-tools.maven)
 
 As executable application:
 
 ```
-$ mvn -Pnative package
+$ mvn -Pnative native:compile
 $ ./target/syncope
 ```
 
-### [Buildpacks](https://docs.spring.io/spring-boot/docs/current/reference/html/container-images.html#container-images.buildpacks)
+### [Buildpacks](https://docs.spring.io/spring-boot/docs/3.0.0-RC2/reference/htmlsingle/#native-image.developing-your-first-application.buildpacks)
 
 Build Docker image and run as Docker container:
 
 ```
-$ mvn spring-boot:build-image
+$ mvn -Pnative spring-boot:build-image
 $ docker run syncope:4.0.0-SNAPSHOT 
 ```
+
+## How to test
+
+Just browse http://localhost:8080/v3/api-docs
+

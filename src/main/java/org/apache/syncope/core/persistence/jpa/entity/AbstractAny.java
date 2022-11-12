@@ -18,9 +18,9 @@
  */
 package org.apache.syncope.core.persistence.jpa.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import java.time.OffsetDateTime;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractAny extends AbstractGeneratedKeyEntity {

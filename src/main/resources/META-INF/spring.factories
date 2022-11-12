@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.apache.syncope.core.rest.RESTContext,\
-  org.apache.syncope.core.spring.security.SecurityContext,\
-  org.apache.syncope.core.logic.LogicContext,\
-  org.apache.syncope.core.persistence.jpa.PersistenceContext

@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.2</version>
+    <version>3.0.0-RC2</version>
     <relativePath/>
   </parent>
 
@@ -18,9 +18,6 @@
   <description>Study prototype for Apache Syncope 4.0 Notturno</description>
 
   <properties>
-    <spring-native.version>0.12.1</spring-native.version>
-    <springdoc.version>1.6.9</springdoc.version>
-    
     <syncope.version>${project.version}</syncope.version>
 
     <targetJdk>17</targetJdk>
@@ -30,24 +27,18 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.experimental</groupId>
-      <artifactId>spring-native</artifactId>
-      <version>${spring-native.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-      <exclusions>
-        <!-- Exclude metrics when not used in order to optimize the memory footprint -->
-        <exclusion>
-          <groupId>io.micrometer</groupId>
-          <artifactId>micrometer-core</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-to-slf4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-to-slf4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -57,6 +48,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
+    <!--<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>-->
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+      <version>2.0.0-RC1</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -64,20 +65,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springdoc</groupId> 
-      <artifactId>springdoc-openapi-webflux-core</artifactId>
-      <version>${springdoc.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springdoc</groupId> 
-      <artifactId>springdoc-openapi-webflux-ui</artifactId>
-      <version>${springdoc.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>1.9</version>
+      <version>1.10.0</version>
     </dependency>
 
     <dependency>
@@ -95,7 +85,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.23</version>
+      <version>9.25.6</version>
     </dependency>
 
     <dependency>
@@ -107,11 +97,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>me.yaman.can</groupId>
-      <artifactId>spring-boot-webflux-h2-console</artifactId>
-      <version>0.0.1</version>
     </dependency>
 
     <dependency>
@@ -170,40 +155,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.springframework.experimental</groupId>
-        <artifactId>spring-aot-maven-plugin</artifactId>
-        <version>${spring-native.version}</version>
-        <configuration>
-          <mode>native</mode>
-          <removeYamlSupport>true</removeYamlSupport>
-        </configuration>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>test-generate</id>
-            <goals>
-              <goal>test-generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <image>
-            <builder>paketobuildpacks/builder:tiny</builder>
-            <env>
-              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-              <BP_JVM_VERSION>17</BP_JVM_VERSION>
-            </env>
-          </image>
-        </configuration>
       </plugin>
     </plugins>
 
@@ -215,80 +168,24 @@
     </resources>
   </build>
 
-  <profiles>
-    <profile>
-      <id>native</id>
-
-      <dependencies>
-        <dependency>
-          <groupId>org.springdoc</groupId>
-          <artifactId>springdoc-openapi-native</artifactId>
-          <version>${springdoc.version}</version>
-        </dependency>
-
-        <!-- Required with Maven Surefire 2.x -->
-        <dependency>
-          <groupId>org.junit.platform</groupId>
-          <artifactId>junit-platform-launcher</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.graalvm.buildtools</groupId>
-            <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.13</version>
-            <configuration>
-              <metadataRepository>
-                <enabled>true</enabled>
-              </metadataRepository>
-              <skipNativeTests>true</skipNativeTests>
-            </configuration>
-            <extensions>true</extensions>
-            <executions>
-              <execution>
-                <id>build-native</id>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-              <execution>
-                <id>test-native</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <phase>test</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <configuration>
-              <classifier>exec</classifier>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <repositories>
     <repository>
-      <id>spring-release</id>
-      <name>Spring release</name>
-      <url>https://repo.spring.io/release</url>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
-      <id>spring-release</id>
-      <name>Spring release</name>
-      <url>https://repo.spring.io/release</url>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </pluginRepository>
-  </pluginRepositories>  
+  </pluginRepositories>
 </project>
