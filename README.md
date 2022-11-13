@@ -20,7 +20,7 @@ As ordinary Spring Boot application:
 $ mvn spring-boot:run
 ```
 
-### Executable(https://docs.spring.io/spring-boot/docs/3.0.0-RC2/reference/htmlsingle/#native-image.developing-your-first-application.native-build-tools.maven)
+### [Executable](https://docs.spring.io/spring-boot/docs/3.0.0-RC2/reference/htmlsingle/#native-image.developing-your-first-application.native-build-tools.maven)
 
 As executable application:
 
