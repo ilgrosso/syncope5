@@ -42,3 +42,14 @@ $ docker run syncope:4.0.0-SNAPSHOT
 
 Just browse http://localhost:8080/v3/api-docs
 
+### Spring Boot
+
+```
+$ mvn test
+```
+
+### Executable
+
+```
+$ mvn -PnativeTest test
+```
