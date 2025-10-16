@@ -1,0 +1,27 @@
+name: "Build"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+    - name: Setup Java JDK
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: 21
+    - name: Setup Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.6
+    - run: |
+       mvn -U clean install

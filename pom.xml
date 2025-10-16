@@ -14,7 +14,7 @@
   <groupId>org.apache.syncope</groupId>
   <artifactId>syncope</artifactId>
   <version>5.0.0-SNAPSHOT</version>
-  <name>syncope</name>
+  <name>syncope5</name>
   <description>Study prototype for Apache Syncope 5.0</description>
 
   <properties>
@@ -141,8 +141,6 @@
         <configuration>
           <enableLazyInitialization>true</enableLazyInitialization>
           <enableDirtyTracking>true</enableDirtyTracking>
-          <classesDirectory>${project.build.outputDirectory}/com/example/demo/jpa/entity,
-            ${project.build.outputDirectory}/com/example/demo/data</classesDirectory>
         </configuration>
         <executions>
           <execution>
