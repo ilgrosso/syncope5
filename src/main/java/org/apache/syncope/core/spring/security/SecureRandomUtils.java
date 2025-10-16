@@ -19,7 +19,7 @@
 package org.apache.syncope.core.spring.security;
 
 import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.RandomBasedGenerator;
+import com.fasterxml.uuid.NoArgGenerator;
 import java.security.SecureRandom;
 import java.util.UUID;
 import org.apache.commons.text.RandomStringGenerator;
@@ -35,19 +35,19 @@ public final class SecureRandomUtils {
             usingRandom(RANDOM::nextInt).
             withinRange('0', 'z').
             filteredBy(Character::isLetterOrDigit).
-            build();
+            get();
 
     private static final RandomStringGenerator FOR_LETTERS = new RandomStringGenerator.Builder().
             usingRandom(RANDOM::nextInt).
             withinRange('a', 'z').
-            build();
+            get();
 
     private static final RandomStringGenerator FOR_NUMBERS = new RandomStringGenerator.Builder().
             usingRandom(RANDOM::nextInt).
             withinRange('0', '9').
-            build();
+            get();
 
-    private static final RandomBasedGenerator UUID_GENERATOR = Generators.randomBasedGenerator(RANDOM);
+    private static final NoArgGenerator UUID_GENERATOR = Generators.timeBasedEpochGenerator(RANDOM);
 
     public static String generateRandomPassword(final int tokenLength) {
         return FOR_PASSWORD.generate(tokenLength);
@@ -75,7 +75,11 @@ public final class SecureRandomUtils {
                     }
 
                     return found;
-                }).build().generate(1);
+                }).get().generate(1);
+    }
+
+    public static int generateRandomInt(final int startInclusive, final int endExclusive) {
+        return startInclusive + RANDOM.nextInt(endExclusive - startInclusive);
     }
 
     public static UUID generateRandomUUID() {

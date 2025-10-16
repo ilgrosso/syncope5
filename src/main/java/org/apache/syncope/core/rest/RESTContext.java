@@ -33,17 +33,14 @@ import org.apache.syncope.core.rest.service.UserServiceImpl;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
+import org.springframework.boot.webflux.autoconfigure.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
-import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.result.view.HttpMessageWriterView;
 
 @OpenAPIDefinition(info =
-        @Info(title = "Apache Syncope", version = "4.0.0", contact =
+        @Info(title = "Apache Syncope", version = "5.0.0", contact =
                 @Contact(name = "The Apache Syncope community",
                         email = "dev@syncope.apache.org",
                         url = "https://syncope.apache.org")),
@@ -57,11 +54,6 @@ import org.springframework.web.reactive.result.view.HttpMessageWriterView;
 @AutoConfigureBefore(WebFluxAutoConfiguration.class)
 @Configuration
 public class RESTContext implements WebFluxConfigurer {
-
-    @Override
-    public void configureViewResolvers(final ViewResolverRegistry registry) {
-        registry.defaultViews(new HttpMessageWriterView(new Jackson2JsonEncoder()));
-    }
 
     private OpenApiCustomizer openApiCustomizer() {
         return openAPI -> openAPI.getPaths().values().stream().
@@ -115,7 +107,7 @@ public class RESTContext implements WebFluxConfigurer {
                         operation.setResponses(responses);
                     }
 
-                    ApiResponse defaultResponse = responses.getDefault();
+                    ApiResponse defaultResponse = responses.get(ApiResponses.DEFAULT);
                     if (defaultResponse != null) {
                         responses.remove(ApiResponses.DEFAULT);
                         responses.addApiResponse("200", defaultResponse);

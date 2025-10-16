@@ -11,7 +11,7 @@ import org.apache.syncope.core.starter.SyncopeCoreApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.web.server.test.LocalServerPort;
 import reactor.core.publisher.Mono;
 
 @SpringBootTest(classes = SyncopeCoreApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

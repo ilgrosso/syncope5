@@ -10,7 +10,8 @@ public class SyncopeClient {
 
     public SyncopeClient(final String baseUrl) {
         WebClient client = WebClient.builder().baseUrl(baseUrl).build();
-        factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(client)).build();
+        factory = HttpServiceProxyFactory.builder().
+                exchangeAdapter(WebClientAdapter.create(client)).build();
     }
 
     public <T> T getService(final Class<T> serviceClass) {

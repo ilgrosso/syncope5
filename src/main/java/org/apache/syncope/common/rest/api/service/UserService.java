@@ -17,13 +17,8 @@ import org.apache.syncope.common.rest.api.RESTHeaders;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -32,7 +27,6 @@ import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Mono;
 
 @HttpExchange("/rest/users")
-@RequestMapping("/rest/users")
 public interface UserService {
 
     @Operation(summary = "Creates a new user.")
@@ -63,7 +57,6 @@ public interface UserService {
                         "Allows the server to inform the "
                         + "client about the fact that a specified preference was applied") }))
     @PostExchange(accept = MediaType.APPLICATION_JSON_VALUE, contentType = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<ResponseEntity<UserTO>> create(@RequestBody UserCR createReq);
 
     @Operation(summary = "Deletes user matching provided key.")
@@ -101,7 +94,6 @@ public interface UserService {
                 "The ETag value provided via the 'If-Match' header does not match the latest modification"
                 + " date of the entity") })
     @DeleteExchange(value = "/{key}", contentType = MediaType.APPLICATION_JSON_VALUE)
-    @DeleteMapping(value = "/{key}", produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<ResponseEntity<UserTO>> delete(@PathVariable String key);
 
     @Operation(summary = "Reads the user matching the provided key.")
@@ -109,13 +101,11 @@ public interface UserService {
             @Schema(type = "string"))
     @ApiResponse(responseCode = "200", description = "user with matching key")
     @GetExchange(value = "/{key}")
-    @GetMapping(value = "/{key}")
     Mono<UserTO> read(@PathVariable String key);
 
     @Operation(summary = "Search for users.")
     @ApiResponse(responseCode = "200", description = "Paged list of any objects matching the given query")
     @GetExchange(value = "/")
-    @GetMapping(value = "/")
     Mono<PagedResult<UserTO>> search();
 
     @Operation(summary = "Updates user matching the provided key.")
@@ -152,7 +142,5 @@ public interface UserService {
                 + " date of the entity") })
     @PatchExchange(value = "/{key}",
             accept = MediaType.APPLICATION_JSON_VALUE, contentType = MediaType.APPLICATION_JSON_VALUE)
-    @PatchMapping(value = "/{key}",
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<ResponseEntity<UserTO>> update(@PathVariable String key, @RequestBody UserUR updateReq);
 }
