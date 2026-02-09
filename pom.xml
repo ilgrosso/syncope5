@@ -20,7 +20,7 @@
   <properties>
     <syncope.version>${project.version}</syncope.version>
 
-    <hibernate.version>7.2.3.Final</hibernate.version>
+    <hibernate.version>7.2.4.Final</hibernate.version>
 
     <targetJdk>21</targetJdk>
     <rootpom.basedir>${basedir}</rootpom.basedir>
